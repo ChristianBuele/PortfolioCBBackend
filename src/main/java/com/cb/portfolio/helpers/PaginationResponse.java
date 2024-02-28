@@ -16,7 +16,7 @@ public class PaginationResponse {
     }
 
     public PaginationResponse(int offset, int limit, Long totalPages, Object data) {
-        this.totalPages = totalPages/limit;
+        this.totalPages = totalPages/limit+1;
         this.data = data;
         this.calculateActualPage(offset, limit);
     }

@@ -18,6 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/products")
+@CrossOrigin(origins = "*")
 public class ProductController {
     @Autowired
     private ModelMapper modelMapper;
@@ -29,7 +30,7 @@ public class ProductController {
             @Min (0) @RequestParam(required = true) int offset, @Min(1) @RequestParam(required = true) int limit) {
         List<Product> products = this.productService.findAll(offset, limit);
         PaginationResponse response = new PaginationResponse(offset,limit,this.productService.count(),products);
-        return ResponseEntity.ok(products);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
