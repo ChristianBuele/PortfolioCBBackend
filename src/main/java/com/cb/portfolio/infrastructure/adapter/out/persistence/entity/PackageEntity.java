@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(
-        name = "categories",
+        name = "packages",
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "uk_packages_category_name",
@@ -48,6 +48,6 @@ public class PackageEntity  extends AuditEntity{
     private boolean recommended;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_photo", referencedColumnName = "id_photo",nullable = false)
+    @JoinColumn(name = "id_cover", referencedColumnName = "id_photo",nullable = false)
     private PhotoEntity cover;
 }
