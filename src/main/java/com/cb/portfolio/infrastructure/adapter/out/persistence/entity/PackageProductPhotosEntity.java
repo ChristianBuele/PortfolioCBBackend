@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PackageProductPhotos {
+public class PackageProductPhotosEntity {
 
     @EmbeddedId
     private PackageProductPhotoId id;

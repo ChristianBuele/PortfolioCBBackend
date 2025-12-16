@@ -4,6 +4,8 @@ import com.cb.portfolio.application.port.in.CategoryInPort;
 import com.cb.portfolio.application.port.in.PackageInPort;
 import com.cb.portfolio.application.port.out.CategoryOutPort;
 import com.cb.portfolio.application.port.out.PackageOutPort;
+import com.cb.portfolio.application.port.out.PackageProductOutPort;
+import com.cb.portfolio.application.port.out.ProductOutPort;
 import com.cb.portfolio.application.usecase.CategoryUseCase;
 import com.cb.portfolio.application.usecase.PackageUseCase;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +20,12 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public PackageInPort packageUseCase(PackageOutPort packageOutPort) {
-        return new PackageUseCase(packageOutPort);
+    public PackageInPort packageUseCase(
+            PackageOutPort packageOutPort,
+            ProductOutPort productOutPort,
+            PackageProductOutPort packageProductOutPort
+    ) {
+
+        return new PackageUseCase(packageOutPort,productOutPort,packageProductOutPort);
     }
 }

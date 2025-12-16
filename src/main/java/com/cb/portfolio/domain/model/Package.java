@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,4 +26,6 @@ public class Package {
     private boolean recommended;
 
     private Photo cover;
+
+    private List<Product> products;
 }

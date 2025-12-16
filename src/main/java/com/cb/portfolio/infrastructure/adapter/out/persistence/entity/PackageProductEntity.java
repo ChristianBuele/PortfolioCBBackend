@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PackageProduct extends AuditEntity {
+public class PackageProductEntity extends AuditEntity {
 
     @EmbeddedId
     private PackageProductId id;
