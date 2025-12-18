@@ -8,12 +8,10 @@ import com.cb.portfolio.domain.model.Package;
 import com.cb.portfolio.domain.model.PackageProduct;
 import com.cb.portfolio.domain.model.Page;
 import com.cb.portfolio.domain.model.Product;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -65,6 +63,11 @@ public class PackageUseCase implements PackageInPort {
                 .build();
     }
 
+    @Override
+    public Package findPackageById(Long id) {
+        return this.packageOutPort.findPackageById(id).orElseThrow(()->new EntityNotFoundException("Package not found with id: "+id));
+    }
+
     private List<Product> includedAndNotIncludedProducts(List<Product> allProducts, List<Product> productsByPackage){
 
         Set<Long> includedIds = productsByPackage.stream()
@@ -77,6 +80,9 @@ public class PackageUseCase implements PackageInPort {
                     copy.setInPackage(includedIds.contains(product.getId()));
                     return copy;
                 })
+                .sorted(
+Comparator.comparing(Product::isInPackage)
+                )
                 .toList();
     }
 }

@@ -47,7 +47,6 @@ public class PackageEntity  extends AuditEntity{
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean recommended;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_cover", referencedColumnName = "id_photo",nullable = false)
-    private PhotoEntity cover;
+
+    private String description;
 }

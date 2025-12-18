@@ -28,4 +28,6 @@ public class Package {
     private Photo cover;
 
     private List<Product> products;
+
+    private String description;
 }

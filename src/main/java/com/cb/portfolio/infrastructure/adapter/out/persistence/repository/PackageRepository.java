@@ -13,17 +13,9 @@ public interface PackageRepository extends JpaRepository<PackageEntity,Long> {
         SELECT p FROM PackageEntity p
         WHERE (:idCategory IS NULL OR p.category.id = :idCategory)
           AND (:name IS NULL OR :name = '' OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%')))
-
-        ORDER BY
-          CASE WHEN :sortBy = 'name'  AND :sortDir = 'asc'  THEN p.name END ASC,
-          CASE WHEN :sortBy = 'name'  AND :sortDir = 'desc' THEN p.name END DESC,
-          CASE WHEN :sortBy = 'price' AND :sortDir = 'asc'  THEN p.price END ASC,
-          CASE WHEN :sortBy = 'price' AND :sortDir = 'desc' THEN p.price END DESC
         """)
     Page<PackageEntity> findAllByFilters(
             @Param("idCategory") Long idCategory,
             @Param("name") String name,
-            @Param("sortBy") String sortBy,
-            @Param("sortDir") String sortDir,
             Pageable pageable);
 }

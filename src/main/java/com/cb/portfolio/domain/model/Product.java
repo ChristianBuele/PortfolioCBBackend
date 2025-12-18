@@ -16,6 +16,7 @@ public class Product {
     private Long id;
     private String name;
     private boolean inPackage;
+    private String description;
     private BigDecimal price= BigDecimal.ZERO;
     private List<Photo> photos;
 

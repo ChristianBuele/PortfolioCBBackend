@@ -2,11 +2,10 @@ package com.cb.portfolio.infrastructure.config;
 
 import com.cb.portfolio.application.port.in.CategoryInPort;
 import com.cb.portfolio.application.port.in.PackageInPort;
-import com.cb.portfolio.application.port.out.CategoryOutPort;
-import com.cb.portfolio.application.port.out.PackageOutPort;
-import com.cb.portfolio.application.port.out.PackageProductOutPort;
-import com.cb.portfolio.application.port.out.ProductOutPort;
+import com.cb.portfolio.application.port.in.PackageProductPhotosInPort;
+import com.cb.portfolio.application.port.out.*;
 import com.cb.portfolio.application.usecase.CategoryUseCase;
+import com.cb.portfolio.application.usecase.PackageProductPhotosUseCase;
 import com.cb.portfolio.application.usecase.PackageUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,5 +26,10 @@ public class BeanConfiguration {
     ) {
 
         return new PackageUseCase(packageOutPort,productOutPort,packageProductOutPort);
+    }
+
+    @Bean
+    public PackageProductPhotosInPort packageProductPhotosUseCase(PackageProductPhotosOutPort packageProductPhotosOutPort) {
+        return new PackageProductPhotosUseCase(packageProductPhotosOutPort);
     }
 }

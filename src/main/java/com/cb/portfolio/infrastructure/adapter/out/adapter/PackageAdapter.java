@@ -9,7 +9,10 @@ import com.cb.portfolio.infrastructure.adapter.out.persistence.repository.Packag
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -20,8 +23,16 @@ public class PackageAdapter implements PackageOutPort {
 
     @Override
     public Page<Package> findAllPackagesByFilters(int page, int size, String sortBy, String sortDir, String title, Long idCategory) {
-        Pageable pageable = PageRequest.of(page, size);;
-        org.springframework.data.domain.Page<PackageEntity> packageEntities = packageRepository.findAllByFilters(idCategory,title,sortBy,sortDir,pageable);
+
+
+        Sort sort = Sort.unsorted();
+
+        if (sortBy != null && sortDir != null) {
+            Sort.Direction dir = Sort.Direction.fromString(sortDir);
+                sort = Sort.by(dir, sortBy);
+        }
+        Pageable pageable = PageRequest.of(page, size, sort);
+        org.springframework.data.domain.Page<PackageEntity> packageEntities = packageRepository.findAllByFilters(idCategory,title,pageable);
         return Page.<Package>builder()
                 .content(packageEntities.getContent().stream().map(packageMapper::toDomain).toList())
                 .totalPages(packageEntities.getTotalPages())
@@ -29,5 +40,10 @@ public class PackageAdapter implements PackageOutPort {
                 .pageSize(size)
                 .totalElements(packageEntities.getTotalElements())
                 .build();
+    }
+
+    @Override
+    public Optional<Package> findPackageById(Long id) {
+        return this.packageRepository.findById(id).map(this.packageMapper::toDomain);
     }
 }
