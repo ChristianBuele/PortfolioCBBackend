@@ -1,6 +1,7 @@
 package com.cb.portfolio.application.usecase;
 
 import com.cb.portfolio.application.port.in.PackageProductPhotosInPort;
+import com.cb.portfolio.application.port.out.PackageProductOutPort;
 import com.cb.portfolio.application.port.out.PackageProductPhotosOutPort;
 import com.cb.portfolio.domain.model.Package;
 import com.cb.portfolio.domain.model.PackageProductPhotos;
@@ -17,32 +18,22 @@ import java.util.stream.Collectors;
 public class PackageProductPhotosUseCase implements PackageProductPhotosInPort {
 
     private final PackageProductPhotosOutPort packageProductPhotosOutPort;
+    private final PackageProductOutPort packageProductOutPort;
 
     @Override
-    public List<Product> findAllByPackageProductId(Long packageProductId) {
-        List<PackageProductPhotos> data= this.packageProductPhotosOutPort.findAllByPackageProductId(packageProductId);
-        Map<String,List<PackageProductPhotos>> groupedByProduct = data.stream()
-                .collect(Collectors.groupingBy(ppp -> ppp.getProduct().getName()));
+    public List<Product> findAllByPackageProductId(Long packageId) {
+        List<Product> data= this.packageProductOutPort.findProductsByPackageId(packageId);
 
-        return groupedByProduct.values().stream()
-                .map(group -> {
-                    // Tomar el primer elemento para obtener datos base del producto
-                    PackageProductPhotos first = group.get(0);
-                    Product product = first.getProduct().copy();
-
-                    // Agregar la descripción del package
-                    product.setDescription(first.getDescription());
-
-                    // Recopilar todas las fotos del grupo
-                    List<Photo> photos = group.stream()
-                            .map(PackageProductPhotos::getPhoto)
-                            .filter(Objects::nonNull) // Filtrar nulls por seguridad
-                            .collect(Collectors.toList());
-
-                    product.setPhotos(photos);
-
-                    return product;
-                })
-                .collect(Collectors.toList());
+        return data.stream().map(product -> {
+            List<PackageProductPhotos> productPhotos = this.packageProductPhotosOutPort.findPhotosByPackageAndProduct(packageId,product.getId());
+            List<Photo> photos = productPhotos.stream().map(PackageProductPhotos::getPhoto).toList();
+            String description="";
+            if(!productPhotos.isEmpty()){
+                description  = productPhotos.get(0).getDescription();
+            }
+            product.setDescription(description);
+            product.setPhotos(photos);
+            return product;
+        }).toList();
     }
 }

@@ -18,7 +18,7 @@ public class PackageProductPhotosAdapter implements PackageProductPhotosOutPort 
 
 
     @Override
-    public List<PackageProductPhotos> findAllByPackageProductId(Long packageProductId) {
-        return this.packageProductPhotosMapper.toDomainList(this.packageProductPhotosRepository.findAllByPackageProductId(packageProductId));
+    public List<PackageProductPhotos> findPhotosByPackageAndProduct(Long idPackage, Long idProduct) {
+        return this.packageProductPhotosMapper.toDomainList(this.packageProductPhotosRepository.findAllByPackageProductId(idPackage,idProduct));
     }
 }

@@ -16,4 +16,10 @@ public interface PackageProductRepository extends JpaRepository<PackageProductEn
                 where pp.packageEntity.id in :packageIds
             """)
     List<PackageProductEntity> findAllByPackageEntityIds(@Param("packageIds") List<Long> packageIds);
+
+    @Query("""
+            select pp.productEntity from PackageProductEntity pp
+            where pp.packageEntity.id = :idPackage
+            """)
+    List<ProductEntity> findProductsByPackage(Long idPackage);
 }

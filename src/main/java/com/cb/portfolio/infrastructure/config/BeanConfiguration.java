@@ -29,7 +29,7 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public PackageProductPhotosInPort packageProductPhotosUseCase(PackageProductPhotosOutPort packageProductPhotosOutPort) {
-        return new PackageProductPhotosUseCase(packageProductPhotosOutPort);
+    public PackageProductPhotosInPort packageProductPhotosUseCase(PackageProductPhotosOutPort packageProductPhotosOutPort,PackageProductOutPort packageProductOutPort) {
+        return new PackageProductPhotosUseCase(packageProductPhotosOutPort,packageProductOutPort);
     }
 }

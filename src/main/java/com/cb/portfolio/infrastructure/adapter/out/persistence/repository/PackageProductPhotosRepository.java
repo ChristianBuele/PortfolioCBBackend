@@ -11,7 +11,8 @@ public interface PackageProductPhotosRepository extends JpaRepository<PackagePro
 
     @Query("""
             select p from PackageProductPhotosEntity p
-            where p.pckage.id = :packageProductId
+            where p.pckage.id = :packageId
+            and p.product.id = :idProduct
             """)
-    List<PackageProductPhotosEntity> findAllByPackageProductId(Long packageProductId);
+    List<PackageProductPhotosEntity> findAllByPackageProductId(Long packageId,Long idProduct);
 }
