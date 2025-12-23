@@ -6,5 +6,5 @@ import com.cb.portfolio.domain.model.Product;
 import java.util.List;
 
 public interface PackageProductPhotosInPort {
-    List<Product> findAllByPackageProductId(Long packageProductId);
+    List<Product> findAllByPackageProductId(Long packageId);
 }

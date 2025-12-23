@@ -31,16 +31,16 @@ public class PackageUseCase implements PackageInPort {
                 .map(Package::getId)
                 .toList();
 
-        Map<Long,List<Product>> productsByPackage = this.packageProductOutPort.findProductsByPackageIds(packageIds).stream().map(
-                        pkg->{
-                            pkg.getProduct().setPrice(pkg.getPrice());
-                            return pkg;
-                        }
-                ).collect(
-                        Collectors.groupingBy(
-                                pkg -> pkg.getPackageModel().getId(),
-                                Collectors.mapping(PackageProduct::getProduct, Collectors.toList())
-                        )
+        Map<Long, List<Product>> productsByPackage = this.packageProductOutPort.findProductsByPackageIds(packageIds).stream().map(
+                pkg -> {
+                    pkg.getProduct().setPrice(pkg.getPrice());
+                    return pkg;
+                }
+        ).collect(
+                Collectors.groupingBy(
+                        pkg -> pkg.getPackageModel().getId(),
+                        Collectors.mapping(PackageProduct::getProduct, Collectors.toList())
+                )
         );
 
         // Cargar todos los productos UNA sola vez
@@ -48,13 +48,14 @@ public class PackageUseCase implements PackageInPort {
 
         return Page.<Package>builder()
                 .content(
-                        data.getContent().stream().map(
-                                pkg -> {
-                                    List<Product> productsInPackage = productsByPackage.getOrDefault(pkg.getId(), Collections.emptyList());
-                                    pkg.setProducts(includedAndNotIncludedProducts(allProducts, productsInPackage));
-                                    return pkg;
-                                }
-                        ).toList()
+                        data.getContent().stream()
+                                .map(
+                                        pkg -> {
+                                            List<Product> productsInPackage = productsByPackage.getOrDefault(pkg.getId(), Collections.emptyList());
+                                            pkg.setProducts(includedAndNotIncludedProducts(allProducts, productsInPackage));
+                                            return pkg;
+                                        }
+                                ).toList()
                 )
                 .totalElements(data.getTotalElements())
                 .totalPages(data.getTotalPages())
@@ -65,10 +66,10 @@ public class PackageUseCase implements PackageInPort {
 
     @Override
     public Package findPackageById(Long id) {
-        return this.packageOutPort.findPackageById(id).orElseThrow(()->new EntityNotFoundException("Package not found with id: "+id));
+        return this.packageOutPort.findPackageById(id).orElseThrow(() -> new EntityNotFoundException("Package not found with id: " + id));
     }
 
-    private List<Product> includedAndNotIncludedProducts(List<Product> allProducts, List<Product> productsByPackage){
+    private List<Product> includedAndNotIncludedProducts(List<Product> allProducts, List<Product> productsByPackage) {
 
         Set<Long> includedIds = productsByPackage.stream()
                 .map(Product::getId)
@@ -81,7 +82,7 @@ public class PackageUseCase implements PackageInPort {
                     return copy;
                 })
                 .sorted(
-Comparator.comparing(Product::isInPackage)
+                        Comparator.comparing(Product::isInPackage).reversed()
                 )
                 .toList();
     }

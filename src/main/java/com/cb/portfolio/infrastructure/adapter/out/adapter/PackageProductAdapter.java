@@ -2,7 +2,9 @@ package com.cb.portfolio.infrastructure.adapter.out.adapter;
 
 import com.cb.portfolio.application.port.out.PackageProductOutPort;
 import com.cb.portfolio.domain.model.PackageProduct;
+import com.cb.portfolio.domain.model.Product;
 import com.cb.portfolio.infrastructure.adapter.out.persistence.mapper.PackageProductMapper;
+import com.cb.portfolio.infrastructure.adapter.out.persistence.mapper.ProductMapper;
 import com.cb.portfolio.infrastructure.adapter.out.persistence.repository.PackageProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ public class PackageProductAdapter implements PackageProductOutPort {
 
     private final PackageProductRepository packageProductRepository;
     private final PackageProductMapper packageProductMapper;
+    private final ProductMapper productMapper;
 
     @Override
     public List<PackageProduct> findProductsByPackageIds(List<Long> packageIds){
@@ -24,5 +27,10 @@ public class PackageProductAdapter implements PackageProductOutPort {
             return Collections.emptyList();
         }
        return this.packageProductMapper.toDomainList(this.packageProductRepository.findAllByPackageEntityIds(packageIds));
+    }
+
+    @Override
+    public List<Product> findProductsByPackageId(Long idPackage) {
+        return this.productMapper.toDomain(this.packageProductRepository.findProductsByPackage(idPackage));
     }
 }
