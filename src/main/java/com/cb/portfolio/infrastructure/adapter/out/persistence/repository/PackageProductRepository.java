@@ -22,4 +22,10 @@ public interface PackageProductRepository extends JpaRepository<PackageProductEn
             where pp.packageEntity.id = :idPackage
             """)
     List<ProductEntity> findProductsByPackage(Long idPackage);
+
+    @Query("""
+            select distinct pp.productEntity from PackageProductEntity pp
+            where pp.packageEntity.category.id = :idCategory
+            """)
+    List<ProductEntity> findProductsByCategory(Long idCategory);
 }

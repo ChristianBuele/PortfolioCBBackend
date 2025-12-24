@@ -33,4 +33,9 @@ public class PackageProductAdapter implements PackageProductOutPort {
     public List<Product> findProductsByPackageId(Long idPackage) {
         return this.productMapper.toDomain(this.packageProductRepository.findProductsByPackage(idPackage));
     }
+
+    @Override
+    public List<Product> findAllProductsByCategory(Long idCategory) {
+        return this.productMapper.toDomain(this.packageProductRepository.findProductsByCategory(idCategory));
+    }
 }

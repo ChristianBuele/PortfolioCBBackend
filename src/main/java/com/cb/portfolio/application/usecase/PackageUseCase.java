@@ -44,7 +44,7 @@ public class PackageUseCase implements PackageInPort {
         );
 
         // Cargar todos los productos UNA sola vez
-        List<Product> allProducts = this.productOutPort.findAllProducts();
+        List<Product> allProducts = this.packageProductOutPort.findAllProductsByCategory(idCategory);
 
         return Page.<Package>builder()
                 .content(

@@ -8,4 +8,5 @@ import java.util.List;
 public interface PackageProductOutPort {
     List<PackageProduct> findProductsByPackageIds(List<Long> packageIds);
     List<Product> findProductsByPackageId(Long idPackage);
+    List<Product> findAllProductsByCategory(Long idCategory);
 }
